@@ -8,7 +8,12 @@ import android.os.Environment
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadLargeFileListener
 import com.liulishuo.filedownloader.FileDownloader
-import extension.*
+import extension.appName
+import extension.deleteFile
+import extension.globalContext
+import extension.log
+import extension.no
+import extension.yes
 import util.FileDownloadUtil
 import util.SPUtil
 import util.SignMd5Util
@@ -90,11 +95,14 @@ internal object DownloadAppUtils {
             filePath = updateInfo.config.apkSavePath
         }.no {
             // 适配Android10
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !Environment.isExternalStorageLegacy()){
-                filePath = (context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath ?: "") + "/apk"
-            }else{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !Environment.isExternalStorageLegacy()) {
+                filePath =
+                    (context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath
+                        ?: "") + "/apk"
+            } else {
                 val packageName = context.packageName
-                filePath = Environment.getExternalStorageDirectory().absolutePath + "/" + packageName
+                filePath =
+                    Environment.getExternalStorageDirectory().absolutePath + "/" + packageName
             }
         }
 
@@ -116,23 +124,32 @@ internal object DownloadAppUtils {
         val downloadTask = FileDownloader.getImpl().create(updateInfo.apkUrl)
             .setPath(apkLocalPath)
 
+        if (updateInfo.updateHeaders.isNotEmpty()) {
+            for (key in updateInfo.updateHeaders.keys) {
+                downloadTask.addHeader(key, updateInfo.updateHeaders[key])
+            }
+        } else {
+            downloadTask.addHeader(
+                "User-Agent",
+                "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36"
+            )
+        }
         downloadTask
-            .addHeader("Accept-Encoding","identity")
-            .addHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36")
+            .addHeader("Accept-Encoding", "identity")
             .setListener(object : FileDownloadLargeFileListener() {
 
                 override fun pending(task: BaseDownloadTask, soFarBytes: Long, totalBytes: Long) {
                     log("----使用FileDownloader下载-------")
                     log("pending:soFarBytes($soFarBytes),totalBytes($totalBytes)")
                     downloadStart()
-                    if(totalBytes < 0){
+                    if (totalBytes < 0) {
                         downloadTask.pause()
                     }
                 }
 
                 override fun progress(task: BaseDownloadTask, soFarBytes: Long, totalBytes: Long) {
                     downloading(soFarBytes, totalBytes)
-                    if(totalBytes < 0){
+                    if (totalBytes < 0) {
                         downloadTask.pause()
                     }
                 }

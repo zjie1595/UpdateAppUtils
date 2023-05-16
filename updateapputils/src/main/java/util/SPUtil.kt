@@ -1,6 +1,6 @@
 package util
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.SharedPreferences
 import extension.globalContext
 
@@ -35,6 +35,6 @@ internal object SPUtil {
 
     private fun getSp(): SharedPreferences? {
         if (globalContext() == null) return null
-        return globalContext()!!.getSharedPreferences(globalContext()!!.packageName, Activity.MODE_PRIVATE)
+        return globalContext()!!.getSharedPreferences(globalContext()!!.packageName, AppCompatActivity.MODE_PRIVATE)
     }
 }

@@ -57,6 +57,14 @@ object UpdateAppUtils {
     }
 
     /**
+     * 设置更新请求头
+     */
+    fun header(headers: Map<String, String>): UpdateAppUtils {
+        updateInfo.updateHeaders = headers
+        return this
+    }
+
+    /**
      * 设置更新内容
      */
     fun updateContent(content: CharSequence): UpdateAppUtils {
@@ -125,7 +133,7 @@ object UpdateAppUtils {
      */
     fun update() {
 
-        if(globalContext() == null){
+        if (globalContext() == null) {
             log("请先调用初始化init")
             return
         }
@@ -168,7 +176,7 @@ object UpdateAppUtils {
      * * @param context 提供全局context。
      */
     @JvmStatic
-    fun init(context: Context){
+    fun init(context: Context) {
         GlobalContextProvider.mContext = context.applicationContext
         log("外部初始化context")
     }

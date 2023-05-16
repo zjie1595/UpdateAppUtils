@@ -1,6 +1,6 @@
 package update
 
-import android.support.v4.content.FileProvider
+import androidx.core.content.FileProvider
 import extension.log
 import extension.yes
 import util.GlobalContextProvider

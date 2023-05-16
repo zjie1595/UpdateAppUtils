@@ -18,5 +18,7 @@ internal data class UpdateInfo(
     // 更新配置
     var config: UpdateConfig = UpdateConfig(),
     // ui配置
-    var uiConfig: UiConfig = UiConfig()
+    var uiConfig: UiConfig = UiConfig(),
+    // 下载apk需要的请求头
+    var updateHeaders: Map<String, String> = emptyMap()
 )

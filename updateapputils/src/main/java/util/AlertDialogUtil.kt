@@ -1,7 +1,7 @@
 package util
 
-import android.app.Activity
-import android.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import com.teprinciple.updateapputils.R
 import extension.string
 
@@ -13,7 +13,7 @@ import extension.string
 internal object AlertDialogUtil {
 
     fun show(
-        activity: Activity,
+        activity: AppCompatActivity,
         message: String,
         onCancelClick: () -> Unit = {},
         onSureClick: () -> Unit = {},
