@@ -24,24 +24,37 @@ UpdateAppUtils2.0功能结构变化巨大，建议使用2.0以上版本；[2.0�
 
 ### 集成
 
-```
-repositories {
-   jcenter()
+添加远程仓库根据创建项目的 Android Studio 版本有所不同
+
+Android Studio Arctic Fox以下创建的项目 在项目根目录的 build.gradle 添加仓库
+
+```groovy
+allprojects {
+    repositories {
+        // ...
+        maven { url 'https://jitpack.io' }
+    }
 }
 ```
 
-Support
-```
-implementation 'com.teprinciple:updateapputils:2.3.0'
+Android Studio Arctic Fox以上创建的项目 在项目根目录的 settings.gradle 添加仓库
+
+```kotlin
+dependencyResolutionManagement {
+    repositories {
+        // ...
+        maven { url 'https://jitpack.io' }
+    }
+}
 ```
 
-AndroidX项目
-```
-注意，由于操作失误bintray 中updateapputilsX被我删掉，
-所以2.3.0以后使用updateapputilsx。之前的仍使用updateapputilsX
-//implementation 'com.teprinciple:updateapputilsX:2.2.1'
-implementation 'com.teprinciple:updateapputilsx:2.3.0'
+然后在 module 的 build.gradle 添加依赖框架
 
+```groovy
+dependencies {
+    //...
+    implementation 'com.github.zjie1595:UpdateAppUtils:2.3.1'
+}
 ```
 
 ### 使用
